@@ -23,7 +23,7 @@ Tables required for this project:
         activeTime TEXT NOT NULL,
         color TEXT NOT NULL
 
-## NOTE: name can be used directly as a primary key since only 1 copy of each animal type is possible
+### NOTE: name can be used directly as a primary key since only 1 copy of each animal type is possible
 
 
 
