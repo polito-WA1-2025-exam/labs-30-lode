@@ -8,7 +8,7 @@
 # Exercise "Guess Who?"
 
 # Lab Journal
-Tables required for this project:
+**Tables required for this project**:
   - Animal: the animal table consists of a list of animals having the following attributes:
 
         name TEXT NOT NULL PRIMARY KEY,
@@ -23,8 +23,12 @@ Tables required for this project:
         activeTime TEXT NOT NULL,
         color TEXT NOT NULL
 
-### NOTE: name can be used directly as a primary key since only 1 copy of each animal type is possible
+#### NOTE: name can be used directly as a primary key since only 1 copy of each animal type is possible.
 
+- Each animal has a **unique** combination of all the attributes, so that the questions can lead in the end to **only** 1 animal.
 
+- There are 3 levels of difficulty: *easy, normal, hard*.
 
-...
+  - easy: displays 12 animals
+  - normal: displays 24 animals
+  - hard: displays 36 animals
