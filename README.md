@@ -10,6 +10,7 @@
 # Lab Journal
 Tables required for this project:
   - Animal: the animal table consists of a list of animals having the following attributes:
+
         name TEXT NOT NULL PRIMARY KEY,
         canFly BOOLEAN NOT NULL,
         livesInWater BOOLEAN NOT NULL,
