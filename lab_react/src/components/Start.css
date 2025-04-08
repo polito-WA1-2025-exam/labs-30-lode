@@ -1,0 +1,26 @@
+.start-container{
+    position: relative;
+    top: 0;
+    right: 0;
+    bottom: 10;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.start-screen{
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+}
+
+.start-button {
+    position: absolute;
+    top: 85%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px; /* Adjust size as needed */
+    cursor: pointer;
+}
+

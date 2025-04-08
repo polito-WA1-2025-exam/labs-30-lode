@@ -1,0 +1,56 @@
+GET http://localhost:3000/
+
+###
+
+GET http://localhost:3000/animal
+
+###
+
+GET http://localhost:3000/animal/horse
+
+###
+
+GET http://localhost:3000/animal?dietType=omnivore
+
+
+###
+
+GET http://localhost:3000/animal?color=black&hasTail=1&hasFur=1
+
+###
+
+DELETE http://localhost:3000/animal/horse
+
+###
+
+POST http://localhost:3000/animal?name=horse&canFly=0&livesInWater=0&numberOfLegs=4&isDomestic=1&hasTail=1&laysEggs=0&dietType=herbivore&HasFur=1&activeTime=diurnal&color=black
+
+###
+
+POST http://localhost:3000/animal
+Content-Type: application/json
+
+{
+  "name": "horse",
+  "canFly": 0,
+  "livesInWater": 0,
+  "numberOfLegs": 4,
+  "isDomestic": 1,
+  "hasTail": 1,
+  "laysEggs": 0,
+  "dietType": "herbivore",
+  "hasFur": 1,
+  "activeTime": "diurnal",
+  "color": "black"
+}
+
+###
+
+PUT http://localhost:3000/animal/horse
+Content-Type: application/json
+
+{
+    "canFly": 1,
+    "livesInWater": 1,
+    "color": "white"
+}
