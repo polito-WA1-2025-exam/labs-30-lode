@@ -248,4 +248,56 @@ export function retreiveByDifferentAttributes(attributeMap){
 }
 
 
+export function randomAnimal1(){
+
+    const sqlQuery = "SELECT name FROM Animal";
+
+    return new Promise((resolve, reject) => {
+        db.all(sqlQuery, (err, rows) => {
+            if (err){
+                reject(err);
+            }
+            else{
+                const names = rows.map((tuple) => tuple.name);
+
+                let index = Math.floor(Math.random() * (names.length - 1));
+
+                resolve(names[index]);
+            }
+        })
+    })
+
+}
+
+// randomAnimal1().then((rows) => console.log(rows)).catch((err) => console.log(err));
+
+const name = await randomAnimal1();
+
+// console.log(name);
+
+
+function randomAnimal(){
+    const sqlQuery = "SELECT name FROM Animal";
+
+    db.all(sqlQuery, (err, rows) => {
+        if (err){
+            console.log(err);
+        }
+        else{
+            const names = rows.map((tuple) => tuple.name);
+
+            let index = Math.floor(Math.random() * (names.length - 1));
+
+            console.log(names[index]);
+
+            return(names[index]);
+        }
+    })
+
+}
+
+const animalName = randomAnimal();
+
+console.log(animalName);
+
 

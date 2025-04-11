@@ -8,7 +8,7 @@ function Difficulty(props){
 
     if (showAnimals == true){
         return (
-            <ShowAnimals difficulty={props.difficulty}/>
+            <ShowAnimals difficulty={props.difficulty} ShowButtons={props.ShowButtons} score={props.score}/>
         )
     }
 

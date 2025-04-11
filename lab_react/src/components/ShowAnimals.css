@@ -1,26 +1,24 @@
-table {
-  margin: 20px 0 20px -360px;
-  border-collapse: separate;
-  border-spacing: 15px;
+/* Main layout: images left, form right */
+.main-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 60px;
+  padding: 30px 50px;
 }
 
-td {
+/* Image grid/table */
+.image-grid table {
+  margin: 0;
+  border-collapse: separate;
+  border-spacing: 20px;
+}
+
+.image-container {
   text-align: center;
 }
 
+/* Image styles */
 .animal {
-  width: 160px;
-  height: 160px;
-  object-fit: cover; /* Ensures images fill the box and maintain aspect ratio */
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease;
-  cursor: pointer;
-}
-
-.small-image {
-  width: 120px;
-  height: 120px;
   object-fit: cover;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -28,9 +26,18 @@ td {
   cursor: pointer;
 }
 
+.animal:hover {
+  transform: scale(1.1);
+}
+
+.small-image {
+  width: 120px;
+  height: 120px;
+}
+
 .medium-image {
-  width: 140px;
-  height: 140px;
+  width: 130px;
+  height: 130px;
 }
 
 .large-image {
@@ -38,11 +45,41 @@ td {
   height: 160px;
 }
 
-.animal:hover {
-  transform: scale(1.1);
+/* Form section (on the right) */
+.form-section {
+  margin-top: 50px;
+  margin-left: 40px;
+  flex-grow: 1;
 }
 
-/* Modal background */
+.form-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 150px;
+}
+
+/* .form-row {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-top: 20px;
+} */
+
+.big-select-1 {
+  /* font-size: 1.2rem; */
+  padding: 12px 16px;
+  height: 50px;
+  min-width: 240px;
+}
+
+.big-select-2 {
+  /* font-size: 1.2rem; */
+  padding: 12px 16px;
+  height: 50px;
+  min-width: 140px;
+}
+
+/* Modal styles */
 .modal {
   position: fixed;
   top: 0;
@@ -56,7 +93,6 @@ td {
   z-index: 1000;
 }
 
-/* Modal content */
 .modal-content {
   position: relative;
   width: 85vmin;
@@ -68,16 +104,14 @@ td {
   border-radius: 12px;
 }
 
-
-/* Enlarge the image */
 .enlarged-image {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
   border-radius: 10px;
-
 }
 
+/* Buttons */
 button {
   margin: 10px;
   padding: 8px 16px;

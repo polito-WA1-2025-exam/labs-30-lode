@@ -3,8 +3,10 @@ import startLogo from "../assets/startLogo.png"
 import "./Start.css";
 import Difficulty from "./Difficulty";
 import {useState} from "react";
+import ShowButtons from "./ShowButtons";
 
-function Start(){
+
+function Start(props){
     const [showDifficulty, setShowDifficulty] = useState(false);
     const [difficulty, setDifficulty] = useState("normal");
 
@@ -21,7 +23,7 @@ function Start(){
             <div className="start-container">
 
                 {/* <img src={startBackground} className="start-screen" alt="Start"/> */}
-                <Difficulty difficulty={difficulty} applyDifficulty={applyDifficulty}/>
+                <Difficulty difficulty={difficulty} applyDifficulty={applyDifficulty} ShowButtons={props.ShowButtons} score={props.score}/>
                 {/* <h1>{difficulty}</h1> */}
 
             </div>

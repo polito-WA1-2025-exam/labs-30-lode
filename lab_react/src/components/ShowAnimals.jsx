@@ -3,6 +3,8 @@ import cat from "../assets/animals/cat.jpg";
  
 import "./ShowAnimals.css";
 
+// import ShowButtons from "./ShowButtons";
+
 function ShowAnimals(props){
     const [index, setIndex] = useState(0);
     const increaseIndex = () => setIndex((index) => index + 1);
@@ -34,27 +36,34 @@ function ShowAnimals(props){
 
     return(
 
-        <>
-            {/* <h1>{index}</h1> */}
-
-            <table>
-                <tbody>
+        <div className="main-layout">
+            <div className="image-grid">
 
 
-                    {chunkedImages.map((imagesList, i) => 
-                        <RowImage 
-                            key={i} 
-                            imagesList={imagesList} 
-                            increaseIndex={increaseIndex}
-                            difficulty={props.difficulty}/>)}
-
-                    {/* <RowImage imagesList={imagesList} index={index} increaseIndex={increaseIndex}/> */}
+                <table>
+                    <tbody>
 
 
-                </tbody>
-            </table>
+                        {chunkedImages.map((imagesList, i) => 
+                            <RowImage 
+                                key={i} 
+                                imagesList={imagesList} 
+                                increaseIndex={increaseIndex}
+                                difficulty={props.difficulty}/>)}
 
-        </>
+                        {/* <RowImage imagesList={imagesList} index={index} increaseIndex={increaseIndex}/> */}
+
+
+                    </tbody>
+                                    
+                </table>
+                
+            </div>
+
+            <div className="form-section">
+                <props.ShowButtons score={props.score}/>
+            </div>
+        </div>
 
     )
 

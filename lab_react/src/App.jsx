@@ -2,35 +2,39 @@ import { useState } from 'react'
 // import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import eagleImage from "./assets/animals/eagle.jpg"
-import duckImage from "./assets/animals/duck.jpg"
-import bat from "./assets/animals/bat.jpg"
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import Start from './components/Start'
 import Difficulty from "./components/Difficulty"
 import ShowAnimals from "./components/ShowAnimals"
+import ShowButtons from './components/ShowButtons';
+
+// import { randomAnimal } from "../../guess_who.mjs"
 
 function App() {
-  const [score, setScore] = useState(0); // noteAmjad: this will NOT be used till 1 month later ...
+  const [score, setScore] = useState(1000); // noteAmjad: this will NOT be used till 1 month later ...
 
   const [difficulty, setDifficulty] = useState("normal"); // the default is normal
 
+  // const [animal, setAnimal] = useState(randomAnimal());
 
   // const applyDifficulty = (diff) => {setDifficulty(() => diff)};
   // we can do directly in the following way because here updating the value
   // does NOT depend on the previous one, instead we have a parameter
   const applyDifficulty = (diff) => setDifficulty(diff);
 
-
+  
 
 
   return (
     <>
 
-      <Start/>
+      <Start ShowButtons={ShowButtons} score={score}/>
       {/* <Difficulty applyDifficulty={applyDifficulty}/> */}
       {/* <h2>{difficulty}</h2>  */}
+
+
+      {/* <ShowButtons /> */}
 
       {/* <ShowAnimals difficulty={difficulty}/> */}
 
