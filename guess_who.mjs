@@ -47,7 +47,7 @@ export function retrieveAnimals(){
 
 retrieveAnimals().then((rows) => console.log(rows.length));
 
-/*
+
 function checkUniqueness(rows){
     const uniqueAnimals = new Set();
 
@@ -63,7 +63,7 @@ function checkUniqueness(rows){
 }
 
 retrieveAnimals().then((rows) => checkUniqueness(rows));
-*/
+
 
 
 function findAnimalsColor(reqList){
@@ -88,7 +88,7 @@ function findAnimalsColor(reqList){
 }
 
 // this function can be overloaded as much as we want to take different aspects ...
-findAnimalsColor("YeLlOw").then((animals) => console.log(animals));
+// findAnimalsColor("YeLlOw").then((animals) => console.log(animals));
 
 
 export function addAnimal(propertieslistOrdered){
