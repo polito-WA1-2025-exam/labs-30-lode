@@ -6,23 +6,28 @@ import { Button, Form } from "react-bootstrap";
 
 function ShowButtons(props) {
     const [selectedQuestion, setSelectedQuestion] = useState(undefined);
+    const [selectedAnswer, setSelectedAnswer] = useState(false);
+
 
     const handleClick = (questionId) => {
         setSelectedQuestion(questionId);
     }
 
+    const handleAnswerClick = (value) => {
+        setSelectedAnswer(value);
+    }
 
     return(
         <div className="form-wrapper">
 
-                <Form.Select className="big-select-1" aria-label="Default select example" onChange={(e) => handleClick(e.target.value)}>
-                    <option>Open this select menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                <Form.Select className="big-select-1" aria-label="Default select example" onChange={(e) => {handleClick(e.target.value); handleAnswerClick(false)}}>
+                    <option>Choose Question</option>
+                    <option value="1">Question1</option>
+                    <option value="2">Question2</option>
+                    <option value="3">Question3</option>
                 </Form.Select>
 
-                {selectedQuestion && <ShowPossibleAnswers value={selectedQuestion}/>}
+                {selectedQuestion && <ShowPossibleAnswers value={selectedQuestion} isAnswered={selectedAnswer} handleAnswerClick={handleAnswerClick}/>}
 
    
         </div>
@@ -32,36 +37,40 @@ function ShowButtons(props) {
 
 function ShowPossibleAnswers(props){
 
-    return (
-        <>
-            <br />
-            <Form.Select className="big-select-2" aria-label="Default select example">
-                <option>Open this select menu</option>
+    
 
-                {props.value == "1" && 
-                    <>
-                        <option value="1">yes</option>
-                        <option value="2">no</option>
-                    </>}
-                
-                {props.value == "2" && 
-                    <>
-                        <option value="1">TRUE</option>
-                        <option value="2">FALSE</option>
-                    </>}
+    if (props.isAnswered == false){
+        return (
+            <>
+                <br />
+                <Form.Select className="big-select-2" aria-label="Default select example" onChange={(e) => props.handleAnswerClick(true)}>
+                    <option>Choose Answer</option>
 
-                {props.value == "3" && 
-                    <>
-                        <option value="1">OKAY</option>
-                        <option value="2">NOT OKAY</option>
-                    </>}
+                    {props.value == "1" && 
+                        <>
+                            <option value="1">yes</option>
+                            <option value="2">no</option>
+                        </>}
+                    
+                    {props.value == "2" && 
+                        <>
+                            <option value="1">TRUE</option>
+                            <option value="2">FALSE</option>
+                        </>}
 
-            </Form.Select>   
+                    {props.value == "3" && 
+                        <>
+                            <option value="1">OKAY</option>
+                            <option value="2">NOT OKAY</option>
+                        </>}
 
-            {/* // {console.log(props.value)}  */}
+                </Form.Select>   
 
-    </>
-    )
+                {/* // {console.log(props.value)}  */}
+
+        </>
+        )
+    }
 }
 
 export default ShowButtons;

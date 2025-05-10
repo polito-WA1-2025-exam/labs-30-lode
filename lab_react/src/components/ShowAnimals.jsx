@@ -1,11 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import cat from "../assets/animals/cat.jpg";
  
 import "./ShowAnimals.css";
+import { Button, Navbar } from "react-bootstrap";
+import { useNavigate } from "react-router";
 
-// import ShowButtons from "./ShowButtons";
+import { getAnimals } from "../API/API.mjs";
 
 function ShowAnimals(props){
+    const navigate = useNavigate();
+
+    const [animals, setAnimals] = useState([]);
+    useEffect(() => {getAnimals().then((animals) => setAnimals(animals));}, [props.difficulty]);
+
+
     const [index, setIndex] = useState(0);
     const increaseIndex = () => setIndex((index) => index + 1);
 
@@ -28,14 +36,32 @@ function ShowAnimals(props){
         freq = 6;
         imagesList = imagesList1;
     }
+    const [chunkedImages, setChunkedImages] = useState([]);
+    useEffect(() => {
+        let freq = props.difficulty === "Easy" ? 4 : 6;
+        let maxImages = props.difficulty === "Easy" ? 12 : props.difficulty === "Normal" ? 24 : imagesList1.length;
+        const imagesList = imagesList1.slice(0, maxImages);
 
-    const chunkedImages = [];
-    for (let i = 0; i < imagesList.length; i += freq) {
-        chunkedImages.push(imagesList.slice(i, i + freq));
-    }
+        const chunkedImages = [];
+
+        for (let i = 0; i < imagesList.length; i += freq){
+            chunkedImages.push(imagesList.slice(i, i + freq));
+        }
+
+        setChunkedImages(chunkedImages);
+
+    }, [animals.length, props.difficulty]);
+
+
+
 
     return(
-
+        <>
+        <h3>Difficulty: {props.difficulty}</h3>
+        <h2> 
+            <Button variant="secondary" onClick={() => navigate("/")}> Back To Start </Button>
+            <Button variant="outline-secondary" onClick={() => navigate("/difficulty")}>Back To Difficulty</Button>
+        </h2>
         <div className="main-layout">
             <div className="image-grid">
 
@@ -51,9 +77,6 @@ function ShowAnimals(props){
                                 increaseIndex={increaseIndex}
                                 difficulty={props.difficulty}/>)}
 
-                        {/* <RowImage imagesList={imagesList} index={index} increaseIndex={increaseIndex}/> */}
-
-
                     </tbody>
                                     
                 </table>
@@ -64,6 +87,7 @@ function ShowAnimals(props){
                 <props.ShowButtons score={props.score}/>
             </div>
         </div>
+        </>
 
     )
 

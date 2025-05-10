@@ -9,6 +9,8 @@ import Difficulty from "./components/Difficulty"
 import ShowAnimals from "./components/ShowAnimals"
 import ShowButtons from './components/ShowButtons';
 
+import { Routes, Route, useNavigate } from "react-router";
+
 // import { randomAnimal } from "../../guess_who.mjs"
 
 function App() {
@@ -29,7 +31,16 @@ function App() {
   return (
     <>
 
-      <Start ShowButtons={ShowButtons} score={score}/>
+      <Routes>
+        <Route path="/" element={<Start ShowButtons={ShowButtons} score={score}/>}/>
+
+        <Route path="/difficulty" element={<Difficulty difficulty={difficulty} applyDifficulty={applyDifficulty}/>}/>
+
+        <Route path = "/animals" element={<ShowAnimals difficulty={difficulty} score={score} ShowButtons={ShowButtons}/>}/>
+
+      </Routes>
+
+      {/* <Start ShowButtons={ShowButtons} score={score}/> */}
       {/* <Difficulty applyDifficulty={applyDifficulty}/> */}
       {/* <h2>{difficulty}</h2>  */}
 

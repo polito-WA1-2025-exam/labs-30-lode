@@ -4,38 +4,19 @@ import "./Start.css";
 import Difficulty from "./Difficulty";
 import {useState} from "react";
 import ShowButtons from "./ShowButtons";
+import { useNavigate } from "react-router";
 
 
 function Start(props){
-    const [showDifficulty, setShowDifficulty] = useState(false);
-    const [difficulty, setDifficulty] = useState("normal");
 
-    const applyDifficulty = (diff) => setDifficulty(diff);
-
-
-    // just for test
-    const redirectToSomething = () => {
-        window.open("https://www.youtube.com", "_blank");
-    }
-
-    if (showDifficulty){
-        return (
-            <div className="start-container">
-
-                {/* <img src={startBackground} className="start-screen" alt="Start"/> */}
-                <Difficulty difficulty={difficulty} applyDifficulty={applyDifficulty} ShowButtons={props.ShowButtons} score={props.score}/>
-                {/* <h1>{difficulty}</h1> */}
-
-            </div>
-        )
-    }
+    const navigate = useNavigate();
 
     return(
         <div className="start-container">
 
             <img src={startBackground} className="start-screen" alt="Start"/>
 
-            <img src={startLogo} className="start-button" alt="Start Button" onClick={() => setShowDifficulty(true)}/>
+            <img src={startLogo} className="start-button" alt="Start Button" onClick={() => {navigate("/difficulty");}}/>
 
         </div>
 
