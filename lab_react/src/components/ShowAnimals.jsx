@@ -5,13 +5,29 @@ import "./ShowAnimals.css";
 import { Button, Navbar } from "react-bootstrap";
 import { useNavigate } from "react-router";
 
-import { getAnimals } from "../API/API.mjs";
+import { getAnimals, getAnimalsByAttributes, retrieveByDifferentAttributesExclusion } from "../API/API.mjs";
 
 function ShowAnimals(props){
+    const [loading, setLoading] = useState(true);
+    const [gameAnimals, setGameAnimals] = useState([]);
+    const [filteredAnimals, setFilteredAnimals] = useState([]);
     const navigate = useNavigate();
 
-    const [animals, setAnimals] = useState([]);
-    useEffect(() => {getAnimals().then((animals) => setAnimals(animals));}, [props.difficulty]);
+    useEffect(() => {
+        const fetchInitialAnimals = async () => {
+            const allAnimals = await getAnimals(); // from DB
+            let count = props.difficulty === "Easy" ? 12 :
+                props.difficulty === "Normal" ? 24 :
+                    allAnimals.length;
+
+            const selectedAnimals = allAnimals.slice(0, count); // or random selection
+            setGameAnimals(selectedAnimals);
+            setFilteredAnimals(selectedAnimals); // no filters at the start
+            setLoading(false);
+        };
+
+        fetchInitialAnimals();
+    }, [props.difficulty]);
 
 
     const [index, setIndex] = useState(0);
@@ -36,24 +52,76 @@ function ShowAnimals(props){
         freq = 6;
         imagesList = imagesList1;
     }
+
+    const [j, setJ] = useState(0);
+    const increaseJ = () => setJ((j) => j + 1);
     const [chunkedImages, setChunkedImages] = useState([]);
     useEffect(() => {
-        let freq = props.difficulty === "Easy" ? 4 : 6;
-        let maxImages = props.difficulty === "Easy" ? 12 : props.difficulty === "Normal" ? 24 : imagesList1.length;
-        const imagesList = imagesList1.slice(0, maxImages);
+        // 1. Map from normalized file name (e.g. 'cat') to image path
+        const imageMap = Object.entries(images).reduce((acc, [path, mod]) => {
+            const fileName = path.split('/').pop();        // 'cat.png'
+            const baseName = fileName.split('.')[0].toLowerCase(); // 'cat'
+            acc[baseName] = mod.default;
+            return acc;
+        }, {});
 
-        const chunkedImages = [];
+        console.log(filteredAnimals);
 
-        for (let i = 0; i < imagesList.length; i += freq){
-            chunkedImages.push(imagesList.slice(i, i + freq));
+        // 2. Match current filtered animals to their image
+        const matchedImages = [];
+        if (Array.isArray(filteredAnimals)) {
+            for (const animal of filteredAnimals) {
+                const nameKey = animal.name?.toLowerCase?.(); // safe access
+                const img = imageMap[nameKey];
+                if (img) {
+                    matchedImages.push(img);
+                }
+            }
         }
 
-        setChunkedImages(chunkedImages);
+        // 3. Chunk by difficulty frequency
+        const freq = props.difficulty === "Easy" ? 4 : 6;
 
-    }, [animals.length, props.difficulty]);
+        const chunked = [];
+        for (let i = 0; i < matchedImages.length; i += freq) {
+            chunked.push(matchedImages.slice(i, i + freq));
+        }
+
+        setChunkedImages(chunked);
+    }, [filteredAnimals, props.difficulty]);
 
 
+const handleClick = async (attribute, value) => {
+    const filter = {};
+    // if (attribute === "carnivore") filter.dietType = "carnivore";
+    // else if (attribute === "herbivore") filter.dietType = "herbivore";
 
+    filter[attribute] = value;
+
+    console.log(filter);
+
+    const allowedNames = filteredAnimals.map((a) => a.name);
+
+    try {
+        const result = await getAnimalsByAttributes(filter, allowedNames);
+
+        // check if selectedAnimal is in the result
+        if (result.some(animal => animal.name === props.selectedAnimal)) {
+            // if it is, then normally excute the query
+            setFilteredAnimals(result);
+            increaseJ();
+        }
+        else {
+            // if NOT found, we need to execute the query to filter all the animals that do NOT have the attribute value
+            const result2 = await retrieveByDifferentAttributesExclusion(attribute, value, allowedNames);
+            setFilteredAnimals(result2);
+            increaseJ();
+        }
+
+    } catch (err) {
+        console.error("Failed to fetch filtered animals: ", err);
+    }
+};
 
     return(
         <>
@@ -61,6 +129,13 @@ function ShowAnimals(props){
         <h2> 
             <Button variant="secondary" onClick={() => navigate("/")}> Back To Start </Button>
             <Button variant="outline-secondary" onClick={() => navigate("/difficulty")}>Back To Difficulty</Button>
+
+            {/* test if I can filter animals using this button */}
+
+            <Button onClick={() => handleClick("carnivore")}> Carnivore </Button>
+
+            <Button onClick={() => handleClick("herbivore")}> Herbivore </Button>
+
         </h2>
         <div className="main-layout">
             <div className="image-grid">
@@ -84,7 +159,7 @@ function ShowAnimals(props){
             </div>
 
             <div className="form-section">
-                <props.ShowButtons score={props.score}/>
+                <props.ShowButtons score={props.score} handleClick={handleClick}/>
             </div>
         </div>
         </>

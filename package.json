@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "dayjs": "^1.11.13",
     "exercise3": "file:",
     "express": "^4.21.2",

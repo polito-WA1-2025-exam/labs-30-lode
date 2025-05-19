@@ -22,12 +22,14 @@ function ShowButtons(props) {
 
                 <Form.Select className="big-select-1" aria-label="Default select example" onChange={(e) => {handleClick(e.target.value); handleAnswerClick(false)}}>
                     <option>Choose Question</option>
-                    <option value="1">Question1</option>
-                    <option value="2">Question2</option>
-                    <option value="3">Question3</option>
+                    <option value="Diet Type">Diet Type</option>
+                    <option value="Color">Color</option>
+                    <option value="Number Of Legs">Number Of Legs</option>
+                    <option value="Lays Eggs">Lays Eggs</option>
+                    <option value="Can Fly">Can Fly</option>
                 </Form.Select>
 
-                {selectedQuestion && <ShowPossibleAnswers value={selectedQuestion} isAnswered={selectedAnswer} handleAnswerClick={handleAnswerClick}/>}
+                {selectedQuestion && <ShowPossibleAnswers value={selectedQuestion} isAnswered={selectedAnswer} handleAnswerClick={handleAnswerClick} handleClick={props.handleClick}/>}
 
    
         </div>
@@ -37,31 +39,61 @@ function ShowButtons(props) {
 
 function ShowPossibleAnswers(props){
 
-    
+    // la2enno l names lezm ykoono exact kermel l query
+    let stupidMapper = {
+        "Diet Type": "dietType",
+        "Color": "color",
+        "Number Of Legs": "numberOfLegs",
+        "Lays Eggs": "laysEggs",
+        "Can Fly": "canFly"
+    }
 
     if (props.isAnswered == false){
         return (
             <>
                 <br />
-                <Form.Select className="big-select-2" aria-label="Default select example" onChange={(e) => props.handleAnswerClick(true)}>
+                <Form.Select className="big-select-2" aria-label="Default select example" onChange={(e) => {props.handleAnswerClick(true); props.handleClick(stupidMapper[props.value], e.target.value)}}>
                     <option>Choose Answer</option>
 
-                    {props.value == "1" && 
+                    {props.value == "Diet Type" && 
                         <>
-                            <option value="1">yes</option>
-                            <option value="2">no</option>
+                            <option value="carnivore">Carnivore</option>
+                            <option value="herbivore">Herbivore</option>
+                            <option value="omnivore">Omnivore</option>
                         </>}
                     
-                    {props.value == "2" && 
+                    {props.value == "Color" && 
                         <>
-                            <option value="1">TRUE</option>
-                            <option value="2">FALSE</option>
+                            <option value="black">Black</option>
+                            <option value="blue">Blue</option>
+                            <option value="brown">Brown</option>
+                            <option value="green">Green</option>
+                            <option value="grey">Grey</option>
+                            <option value="orange">Orange</option>
+                            <option value="pink">Pink</option>
+                            <option value="red">Red</option>
+                            <option value="white">White</option>
                         </>}
 
-                    {props.value == "3" && 
+                    {props.value == "Number Of Legs" && 
                         <>
-                            <option value="1">OKAY</option>
-                            <option value="2">NOT OKAY</option>
+                            <option value="0">0</option>
+                            <option value="2">2</option>
+                            <option value="4">4</option>
+                            <option value="6">6</option>
+                            <option value="8">8</option>
+                        </>}
+
+                    {props.value == "Lays Eggs" && 
+                        <>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </>}
+
+                    {props.value == "Can Fly" &&
+                        <>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
                         </>}
 
                 </Form.Select>   

@@ -1,8 +1,9 @@
 import express from 'express'
 import morgan from 'morgan';
-import sqlite from 'sqlite3'
+import sqlite from 'sqlite3';
+import cors from 'cors';
 
-import { retrieveAnimals, retrieveAnimalByName, retrieveAnimalByDietType, retreiveByDifferentAttributes,  addAnimal, modifyAnimal, removeAnimal } from './guess_who.mjs';
+import { retrieveAnimals, retrieveAnimalByName, retrieveAnimalByDietType, retreiveByDifferentAttributes, retrieveByDifferentAttributesExclusion, addAnimal, modifyAnimal, removeAnimal } from './guess_who.mjs';
 
 const app = express();
 
@@ -12,6 +13,7 @@ const db = new sqlite.Database("guess_who.db", (err) => {if (err) throw err});
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(express.urlencoded());
+app.use(cors());
 
 app.get("/", (req, res) => res.send("Hello World!"));
 
@@ -37,11 +39,33 @@ app.get("/animal/:name", (req, res) => {
 
 
 
-app.get("/animal", (req, res) =>{
-    const filtersMap = req.query;
-    retreiveByDifferentAttributes(filtersMap).then((rows) => {res.status(200).json(rows)}).catch((err) => res.status(500).json({error: err.message}));
+app.get("/animal", async (req, res) => {
+    try {
+        // Extract exclude and allowedNames from query
+        const { exclude, allowedNames, ...filtersMap } = req.query;
 
-})
+        // Normalize allowedNames to always be an array
+        const allowedList = allowedNames
+            ? Array.isArray(allowedNames)
+                ? allowedNames
+                : [allowedNames]
+            : [];
+
+        if (exclude === "no"){  
+            const rows = await retreiveByDifferentAttributes(filtersMap, allowedList);
+            res.status(200).json(rows);
+
+        }
+        else{
+            const rows = await retrieveByDifferentAttributesExclusion(filtersMap, allowedList);
+            res.status(200).json(rows);
+
+        }
+
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
 
 app.delete("/animal/:name", (req, res) => {
     const name = req.params.name;

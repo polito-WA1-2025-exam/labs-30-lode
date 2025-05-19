@@ -199,54 +199,119 @@ export function retrieveAnimalByDietType(dietType){
     })
 }
 
-export function retreiveByDifferentAttributes(attributeMap){
+// export function retreiveByDifferentAttributes(attributeMap){
 
-    // canFly, livesInWater, numberOfLegs, isDomestic, hasTail, laysEggs, DietType, HasFur, ActiveTime, Color
+//     // canFly, livesInWater, numberOfLegs, isDomestic, hasTail, laysEggs, DietType, HasFur, ActiveTime, Color
 
+//     return new Promise((resolve, reject) => {
+//         let sql = `SELECT * FROM Animal`;
+
+//         if (Object.keys(attributeMap).length > 0){
+//             sql += " WHERE ";
+//             Object.keys(attributeMap).forEach((key) => {
+//                 let value = attributeMap[key];
+
+//                 // regarding the value: we might need to verify if it is a number or a boolean in the case of true or false, for now I am just assuminh that we write it as an integer, to modify it I can just do a small if statement and push it to the lsit of values
+
+//                 sql += `${key} = ? AND `
+//             })         
+                
+//             // we need to remove the last AND: either we check that we are on the last one so we do NOT add the AND, or we remove the last AND simply
+//             sql = sql.substring(0, sql.length - 4);
+
+//             console.log(sql);
+
+//             let values = Object.values(attributeMap);
+
+//             db.all(sql, values, (err, rows) => {
+//                 if (err){
+//                     reject(err);
+//                 }
+//                 else{
+//                     resolve(rows);
+//                 }
+//             })
+//         }
+//         else{
+//             sql += ";";
+//             db.all(sql, (err, rows) => {
+//                 if (err){
+//                     reject(err);
+//                 }
+//                 else{
+//                     resolve(rows);
+//                 }
+//             })
+//         }
+
+//     })
+// }
+
+export function retreiveByDifferentAttributes(attributeMap, allowedNames) {
     return new Promise((resolve, reject) => {
         let sql = `SELECT * FROM Animal`;
+        const conditions = [];
+        const values = [];
 
-        if (Object.keys(attributeMap).length > 0){
-            sql += " WHERE ";
-            Object.keys(attributeMap).forEach((key) => {
-                let value = attributeMap[key];
+        // Add attribute filters
+        Object.entries(attributeMap).forEach(([key, value]) => {
+            conditions.push(`${key} = ?`);
+            values.push(value);
+        });
 
-                // regarding the value: we might need to verify if it is a number or a boolean in the case of true or false, for now I am just assuminh that we write it as an integer, to modify it I can just do a small if statement and push it to the lsit of values
-
-                sql += `${key} = ? AND `
-            })         
-                
-            // we need to remove the last AND: either we check that we are on the last one so we do NOT add the AND, or we remove the last AND simply
-            sql = sql.substring(0, sql.length - 4);
-
-            console.log(sql);
-
-            let values = Object.values(attributeMap);
-
-            db.all(sql, values, (err, rows) => {
-                if (err){
-                    reject(err);
-                }
-                else{
-                    resolve(rows);
-                }
-            })
-        }
-        else{
-            sql += ";";
-            db.all(sql, (err, rows) => {
-                if (err){
-                    reject(err);
-                }
-                else{
-                    resolve(rows);
-                }
-            })
+        // Restrict to allowed names
+        if (allowedNames && allowedNames.length > 0) {
+            const placeholders = allowedNames.map(() => '?').join(', ');
+            conditions.push(`name IN (${placeholders})`);
+            values.push(...allowedNames);
         }
 
-    })
+        // Append WHERE clause if any conditions exist
+        if (conditions.length > 0) {
+            sql += ' WHERE ' + conditions.join(' AND ');
+        }
+
+        console.log(sql); // For debugging
+
+        db.all(sql, values, (err, rows) => {
+            if (err) reject(err);
+            else resolve(rows);
+        });
+    });
 }
 
+export function retrieveByDifferentAttributesExclusion(attributeMap, allowedNames) {
+    return new Promise((resolve, reject) => {
+        let sql = `SELECT * FROM Animal`;
+        const conditions = [];
+        const values = [];
+
+        // Exclude attribute values
+        Object.entries(attributeMap).forEach(([key, value]) => {
+            conditions.push(`${key} != ?`);
+            values.push(value);
+        });
+
+        // Restrict to allowed names
+        if (allowedNames && allowedNames.length > 0) {
+            const placeholders = allowedNames.map(() => '?').join(', ');
+            conditions.push(`name IN (${placeholders})`);
+            values.push(...allowedNames);
+        }
+
+        // Append WHERE clause if any conditions exist
+        if (conditions.length > 0) {
+            sql += ' WHERE ' + conditions.join(' AND ');
+        }
+
+        console.log(sql); // For debugging
+
+        db.all(sql, values, (err, rows) => {
+            if (err) reject(err);
+            else resolve(rows);
+        });
+    });
+}    
 
 export function randomAnimal1(){
 
