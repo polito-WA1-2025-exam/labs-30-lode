@@ -25,7 +25,7 @@ function App() {
   // does NOT depend on the previous one, instead we have a parameter
   const applyDifficulty = (diff) => setDifficulty(diff);
 
-  
+  const decreaseScore = () => setScore((score) => score - 100);
 
 
   return (
@@ -36,7 +36,7 @@ function App() {
 
         <Route path="/difficulty" element={<Difficulty difficulty={difficulty} applyDifficulty={applyDifficulty}/>}/>
 
-        <Route path = "/animals" element={<ShowAnimals difficulty={difficulty} score={score} ShowButtons={ShowButtons} selectedAnimal={selectedAnimal}/>}/>
+        <Route path = "/animals" element={<ShowAnimals difficulty={difficulty} score={score} decreaseScore={decreaseScore} ShowButtons={ShowButtons} selectedAnimal={selectedAnimal}/>}/>
 
       </Routes>
 

@@ -159,7 +159,7 @@ const handleClick = async (attribute, value) => {
             </div>
 
             <div className="form-section">
-                <props.ShowButtons score={props.score} handleClick={handleClick}/>
+                <props.ShowButtons score={props.score} decreaseScore={props.decreaseScore} handleClick={handleClick}/>
             </div>
         </div>
         </>
