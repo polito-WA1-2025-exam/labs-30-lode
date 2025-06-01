@@ -15,7 +15,7 @@ import { Routes, Route, useNavigate } from "react-router";
 
 function App() {
   const [score, setScore] = useState(1000); // noteAmjad: this will NOT be used till 1 month later ...
-  const [selectedAnimal, setSelectedAnimal] = useState("frog");
+  // const [selectedAnimal, setSelectedAnimal] = useState("frog");
   const [difficulty, setDifficulty] = useState("normal"); // the default is normal
 
   // const [animal, setAnimal] = useState(randomAnimal());
@@ -36,7 +36,7 @@ function App() {
 
         <Route path="/difficulty" element={<Difficulty difficulty={difficulty} applyDifficulty={applyDifficulty}/>}/>
 
-        <Route path = "/animals" element={<ShowAnimals difficulty={difficulty} score={score} decreaseScore={decreaseScore} ShowButtons={ShowButtons} selectedAnimal={selectedAnimal}/>}/>
+        <Route path = "/animals" element={<ShowAnimals difficulty={difficulty} score={score} decreaseScore={decreaseScore} ShowButtons={ShowButtons}/>}/>
 
       </Routes>
 

@@ -1,4 +1,4 @@
-import { state, useState } from "react";
+import { state, useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 
 
@@ -6,7 +6,14 @@ import { Button, Form } from "react-bootstrap";
 
 function ShowButtons(props) {
 
-    const [localScore, setLocalScore] = useState(1000);
+    const [localScore, setLocalScore] = useState("Select Animal First");
+
+    useEffect(() => {
+        // only set score to 100 when selectedAnimal is set
+        if (props.selectedAnimal) {
+            setLocalScore(1000);
+        }
+    }, [props.selectedAnimal])
 
     const decreaseLocalScore = () => setLocalScore((score) => score - 100);
 
@@ -103,6 +110,7 @@ function ShowButtons(props) {
 
     return (
         <>
+        <h3>Animal: {props.selectedAnimal}</h3>
         <h3>Score: {localScore}</h3>
         <div className="form-wrapper">
 

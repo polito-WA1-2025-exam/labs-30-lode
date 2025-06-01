@@ -8,6 +8,7 @@ import { useNavigate } from "react-router";
 import { getAnimals, getAnimalsByAttributes, retrieveByDifferentAttributesExclusion } from "../API/API.mjs";
 
 function ShowAnimals(props){
+    const [selectedAnimal, setSelectedAnimal] = useState(null);
     const [loading, setLoading] = useState(true);
     const [gameAnimals, setGameAnimals] = useState([]);
     const [filteredAnimals, setFilteredAnimals] = useState([]);
@@ -29,6 +30,10 @@ function ShowAnimals(props){
         fetchInitialAnimals();
     }, [props.difficulty]);
 
+
+    useEffect(() => {
+        // 
+    })
 
     const [index, setIndex] = useState(0);
     const increaseIndex = () => setIndex((index) => index + 1);
@@ -106,7 +111,7 @@ const handleClick = async (attribute, value) => {
         const result = await getAnimalsByAttributes(filter, allowedNames);
 
         // check if selectedAnimal is in the result
-        if (result.some(animal => animal.name === props.selectedAnimal)) {
+        if (result.some(animal => animal.name === selectedAnimal)) {
             // if it is, then normally excute the query
             setFilteredAnimals(result);
             increaseJ();
@@ -131,10 +136,10 @@ const handleClick = async (attribute, value) => {
             <Button variant="outline-secondary" onClick={() => navigate("/difficulty")}>Back To Difficulty</Button>
 
             {/* test if I can filter animals using this button */}
-
+{/* 
             <Button onClick={() => handleClick("carnivore")}> Carnivore </Button>
 
-            <Button onClick={() => handleClick("herbivore")}> Herbivore </Button>
+            <Button onClick={() => handleClick("herbivore")}> Herbivore </Button> */}
 
         </h2>
         <div className="main-layout">
@@ -150,7 +155,7 @@ const handleClick = async (attribute, value) => {
                                 key={i} 
                                 imagesList={imagesList} 
                                 increaseIndex={increaseIndex}
-                                difficulty={props.difficulty}/>)}
+                                difficulty={props.difficulty}  selectedAnimal = {selectedAnimal} setSelectedAnimal={setSelectedAnimal}/>)}
 
                     </tbody>
                                     
@@ -159,7 +164,7 @@ const handleClick = async (attribute, value) => {
             </div>
 
             <div className="form-section">
-                <props.ShowButtons score={props.score} decreaseScore={props.decreaseScore} handleClick={handleClick}/>
+                <props.ShowButtons score={props.score} decreaseScore={props.decreaseScore} handleClick={handleClick} selectedAnimal = {selectedAnimal}/>
             </div>
         </div>
         </>
@@ -177,7 +182,7 @@ function RowImage(props){
                     key={i} 
                     image={image} 
                     increaseIndex={props.increaseIndex}
-                    difficulty={props.difficulty}/>)}
+                    difficulty={props.difficulty} selectedAnimal = {props.selectedAnimal} setSelectedAnimal={props.setSelectedAnimal}/>)}
 
             {/* <ColumnImage imagesList={props.imagesList.slice(props.index, props.index + 4)} increaseIndex={props.increaseIndex}/> */}
 
@@ -201,6 +206,11 @@ function ColumnImage(props) {
     const handleImageClick = () => {
         props.increaseIndex();  // Call the function passed via props
         setIsModalOpen(true);  // Open the modal when image is clicked
+
+        // only set selectedAnimal if it is not already set
+        if (!props.selectedAnimal){
+            props.setSelectedAnimal(() => (props.image).split("/").pop().split(".")[0]);
+        }
     };
 
     const closeModal = () => {
